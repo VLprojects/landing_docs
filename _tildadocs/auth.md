@@ -146,7 +146,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/t
 
 Список персональных токенов отображается в личном кабинете в разделе **Интеграция**:
 
-![personal_tokens](assets/images/personal_tokens.png)
+![personal_tokens](https://i.imgur.com/1M5aMP9.png)
 
 **Важно.** Показан только список токенов и время создания каждого токена. Посмотреть или скопировать созданный ранее токен нельзя. Токен отображается только один раз при его создании, потом увидеть его снова не получится. Поэтому если вы забыли или потеряли токен, то можно только удалить его и создать новый.
 
@@ -159,4 +159,3 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/t
 Чтобы удалить токен и запретить по нему доступ следует удалить токен из списка, нажав на ссылку **Удалить** рядом с ним:
 
 ![personal_tokens](https://i.imgur.com/cNUpdho.png)
-
