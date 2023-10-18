@@ -753,7 +753,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 Создать вебхук можно также в личном кабинете в разделе **Интеграция**. 
 
 
-![webhook](/docs/assets/images/webhook.png)
+![webhook](https://i.imgur.com/IrBj77C.png)
 
 Для этого следует ввести значение URL в поле **WebHook URL** и нажать кнопку **Сохранить**. Значение сгенерированного ключа будет показано в поле **WebHook secret**, откуда его можно скопировать. В случае компрометации ключа его можно поменять, нажав кнопку **Обновить**.
 
