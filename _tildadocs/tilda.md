@@ -738,8 +738,6 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 * `seret` - ключ для проверки подлинности данных, возвращаемых с помощью созданного вебхука,
 * `isActive` - признак активности вебхука (по умолчанию `true`). 
 
-Подробно эти параметры [описаны выше](webhooks.md).
-
 Результат:
 
 ```json
