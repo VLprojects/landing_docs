@@ -614,7 +614,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
  </head>
  <body>
   <p>Пример вставки фрейма livedigital</p>
-  <iframe>
+  <iframe
     src="https://edu.livedigital.space/room/<room_alias>?participantName=IvanIvanov&refreshToken=someTokenHere"
     id="userplayer"
     frameborder="0"
