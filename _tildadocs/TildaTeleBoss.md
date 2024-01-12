@@ -8,7 +8,7 @@
 
 ## Группы и комнаты для проведения трансляций 
 
-В рамках работы с API livedigital используются понятия группы (`space`) и комнаты (`room`). Каждый клиент работает в рамках своей группы, в которой создает комнаты для проведения вебинаров и видеоконференций. Группы и комнаты могут быть публичные и непубличные. 
+В рамках работы с API TeleBoss используются понятия группы (`space`) и комнаты (`room`). Каждый клиент работает в рамках своей группы, в которой создает комнаты для проведения вебинаров и видеоконференций. Группы и комнаты могут быть публичные и непубличные. 
 
 ## Доступ пользователей
 
@@ -18,7 +18,7 @@
 
 API предоставляет набор методов, которые представляют собой HTTP-запросы. Выполняя запрос с определенными параметрами, можно создать новую группу или комнату, сформировать токен пользователя для доступа в комнату при проведении трансляции и т.д. Поддерживается выполнение только авторизованных запросов. Для этого в заголовке запроса передается специальный токен доступа. Такой токен является уникальным для каждого клиента или пользователя. При этом для выполнения одних запросов нужно авторизоваться как клиент, а для выполнения других как пользователь.
 
-**Примечание!** В данном руководстве нет полного описания методов API, которые используются для выполнения операций. Для каждого метода дана ссылка на *Swagger*, где приведена полная спецификация методов. Для доступа к странице *Swagger* необходимо указать логин и пароль, которые можно получить, обратившись к разработчикам livedigital.
+**Примечание!** В данном руководстве нет полного описания методов API, которые используются для выполнения операций. Для каждого метода дана ссылка на *Swagger*, где приведена полная спецификация методов. Для доступа к странице *Swagger* необходимо указать логин и пароль, которые можно получить, обратившись к разработчикам TeleBoss.
 
 ## Встраивание на сайт клиента
 
@@ -26,7 +26,7 @@ API предоставляет набор методов, которые пре�
 
 # Авторизация
 
-Для работы с API livedigital необходима авторизация. Авторизация осуществляется с помощью специальных токенов доступа. Предусмотрены разные типы допуска и разные токены для выполнения различных операций. 
+Для работы с API TeleBoss необходима авторизация. Авторизация осуществляется с помощью специальных токенов доступа. Предусмотрены разные типы допуска и разные токены для выполнения различных операций. 
 
 Клиентский токен (`access_token`) позволяет просматривать публичные сущности, например, комнаты, а также создать пользовательский токен, который можно использовать для создания новых сущностей. Далее при описании методов API указано с помощью какого токена следует авторизовываться для выполнения того или иного запроса. 
 
@@ -42,7 +42,7 @@ API предоставляет набор методов, которые пре�
 
 ```
 {
- “clientId” : “john-smith-livedigital”,
+ “clientId” : “john-smith”,
  “clientSecret” : “VTytkTR7ZHH5nLhoWCLjymrUJjKBzfs4”
 }
 
@@ -62,15 +62,15 @@ API предоставляет набор методов, которые пре�
 
 ## Создание клиентского токена
 
-Для получения клиентского токена следует выполнить запрос `getAccessToken`, передав в параметрах запроса свои `clientId` и `client_secret`, полученные ранее. Также в теле запроса передается параметр `grant_type` со значением `client_credentials`. Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/Auth/getAccessToken).
+Для получения клиентского токена следует выполнить запрос `getAccessToken`, передав в параметрах запроса свои `clientId` и `client_secret`, полученные ранее. Также в теле запроса передается параметр `grant_type` со значением `client_credentials`. Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/Auth/getAccessToken).
 
 Пример выполнения запроса `getAccessToken`
 
-**POST https://moodhood-api.livedigital.space/v1/auth/token**
+**POST https://moodhood-api.teleboss.ru/v1/auth/token**
 
 ```json
 {
- "client_id": "john-smith-livedigital",
+ "client_id": "john-smith",
  "client_secret": "VTytkTR7ZHH5nLhoWCLjymrUJjKBzfs4",
  "grant_type": "client_credentials"
 }
@@ -101,11 +101,11 @@ Authorization: Bearer <access_token>
 Пример кода для cURL с передачей токена в заголовке Authorization:
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/token' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/auth/token' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiSzZEX1ZNQWRrc25CQnpjaTJnRlFBIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc0MTEyOSwiZXhwIjoxNjU2MzQ1OTI5fQ.Qy-zwBGwjyWzPF8uXYtla9IOvCfOCeQ9uzCaUo8Q7pM' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-"client_id": "john-smith-livedigital",
+"client_id": "john-smith",
 "client_secret": "VTytkTR7ZHH5nLhoWCLjymrUJjKBzfs4",
 "grant_type": "password",
 "username": "test_user@test.test",
@@ -122,15 +122,15 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/t
 * **username** - имя пользователя
 * **password** - пароль пользователя
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/Auth/getAccessToken).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/Auth/getAccessToken).
 
 Пример выполнения запроса `getAccessToken`
 
-**POST  https://moodhood-api.livedigital.space/v1/auth/token**
+**POST  https://moodhood-api.teleboss.ru/v1/auth/token**
  
 ```json
 {
- "client_id": "john-smith-livedigital",
+ "client_id": "john-smith",
  "client_secret": "VTytkTR7ZHH5nLhoWCLjymrUJjKBzfs4",
  "grant_type": "password",
  "username": "test_user@test.test",
@@ -141,11 +141,11 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/t
 Пример кода для cURL с передачей клиентского токена в заголовке Authorization:
  
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/token' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/auth/token' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiSzZEX1ZNQWRrc25CQnpjaTJnRlFBIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc0MTEyOSwiZXhwIjoxNjU2MzQ1OTI5fQ.Qy-zwBGwjyWzPF8uXYtla9IOvCfOCeQ9uzCaUo8Q7pM' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-"client_id": "john-smith-livedigital",
+"client_id": "john-smith",
 "client_secret": "VTytkTR7ZHH5nLhoWCLjymrUJjKBzfs4",
 "grant_type": "password",
 "username": "test_user@test.test",
@@ -194,13 +194,13 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/t
 
 ## Создание группы
 
-Для создания новой группы необходимо выполнить запрос `createSpaces`. В результате выполнения будет создана новая группа и вернется ее идентификатор. В запросе необходимо передать параметр `name` - имя создаваемой группы. Следует указать значение `isPublic: true` - для создания публичной группы. Дополнительно можно указать описание - параметр `description` и ссылку на изображение с логотипом - параметр `logo`. Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/Spaces/createSpace).
+Для создания новой группы необходимо выполнить запрос `createSpaces`. В результате выполнения будет создана новая группа и вернется ее идентификатор. В запросе необходимо передать параметр `name` - имя создаваемой группы. Следует указать значение `isPublic: true` - для создания публичной группы. Дополнительно можно указать описание - параметр `description` и ссылку на изображение с логотипом - параметр `logo`. Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.space/doc/#/Spaces/createSpace).
 
 **Примечание!** В случае указания параметра `isPublic:false` доступ к группе имеет только создатель\модератор  
 
 Пример выполнения запроса `createSpaces`
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces**
+**POST  https://moodhood-api.teleboss.ru/v1/spaces**
 
 ```json 
 {
@@ -214,7 +214,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/auth/t
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiZXZ5ZlJWRWsyRGozVFFsYzF5UnBLIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc1ODAwMiwiZXhwIjoxNjU2MzYyODAyfQ.hzXW-dHJD0TUtLY22yefmZogvSanEbb70zRo4Kku98A' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -234,13 +234,13 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 ```
 ## Создание комнат 
 
-Для создания в комнат в группе используется метод `createRooms`. В строке запроса как часть URL-адреса передается ID группы, в которую будет добавлена комната - `{spaceId}` - это значение, возвращаемое методом `createSpaces` при создании группы (см. описание выше). В теле запроса обязательно указывается имя создаваемой комнаты - параметр `name`. Дополнительно можно задать тип комнаты и др. параметры (см [Настройка комнаты](#настройка-комнаты)). Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceRooms/createRoom).
+Для создания в комнат в группе используется метод `createRooms`. В строке запроса как часть URL-адреса передается ID группы, в которую будет добавлена комната - `{spaceId}` - это значение, возвращаемое методом `createSpaces` при создании группы (см. описание выше). В теле запроса обязательно указывается имя создаваемой комнаты - параметр `name`. Дополнительно можно задать тип комнаты и др. параметры (см [Настройка комнаты](#настройка-комнаты)). Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceRooms/createRoom).
 
 В результате выполнения метода в группе с заданным идентификатором создается новая комната определенного типа.
 
 Пример выполнения запроса createRooms
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms**
+**POST  https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms**
 
 ```json 
 {
@@ -255,7 +255,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62b0e24a81ad6df4bb583c58/rooms' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces/62b0e24a81ad6df4bb583c58/rooms' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiZXZ5ZlJWRWsyRGozVFFsYzF5UnBLIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc1ODAwMiwiZXhwIjoxNjU2MzYyODAyfQ.hzXW-dHJD0TUtLY22yefmZogvSanEbb70zRo4Kku98A' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -294,11 +294,11 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 
 В результате выполнения запроса будут изменены настройки группы в соответствии с указанными параметрами. 
 
-В теле запроса обязательно передаются параметры `name` - имя редактируемой группы и  `isPublic: true\false`. В случае указания параметра `isPublic: false` доступ к просмотру комнат в группе имеет только создатель\модератор. Если установлено значение `isPublic: true`, то доступ имеют все пользователи. Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/Spaces/updateSpace).
+В теле запроса обязательно передаются параметры `name` - имя редактируемой группы и  `isPublic: true\false`. В случае указания параметра `isPublic: false` доступ к просмотру комнат в группе имеет только создатель\модератор. Если установлено значение `isPublic: true`, то доступ имеют все пользователи. Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/Spaces/updateSpace).
 
 Пример выполнения запроса `updateSpace`
 
-**PUT  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb**
+**PUT  https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы.
 
@@ -314,7 +314,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 Пример кода для cURL
 
 ```
-curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb' \
+curl --location --request PUT 'https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiZXZ5ZlJWRWsyRGozVFFsYzF5UnBLIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc1ODAwMiwiZXhwIjoxNjU2MzYyODAyfQ.hzXW-dHJD0TUtLY22yefmZogvSanEbb70zRo4Kku98A' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -342,13 +342,13 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 * **lesson** - для уроков, при этом участники могут включать камеру, микрофон, демонстрацию экрана,
 * **webinar** - для вебинаров, когда вести аудио\видео вещание может только создатель или модератор, остальные участники могут только смотреть и слушать. 
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceRooms/updateRoom).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceRooms/updateRoom).
 
 В результате выполнения запроса будут изменены настройки комнаты в соответствии с указанными параметрами.
 
 Пример выполнения запроса `updateRoom`
 
-**PUT  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/62b0e25e3dc082dc7502d273**
+**PUT  https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/62b0e25e3dc082dc7502d273**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы, а *62b0e25e3dc082dc7502d273* - идентификатор комнаты. 
 
@@ -365,7 +365,7 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 Пример кода для cURL
 
 ```
-curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/62b0e24a81ad6df4bb583c58/rooms/62b0e25e3dc082dc7502d273' \
+curl --location --request PUT 'https://moodhood-api.teleboss.ru/v1/spaces/62b0e24a81ad6df4bb583c58/rooms/62b0e25e3dc082dc7502d273' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiZXZ5ZlJWRWsyRGozVFFsYzF5UnBLIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc1ODAwMiwiZXhwIjoxNjU2MzYyODAyfQ.hzXW-dHJD0TUtLY22yefmZogvSanEbb70zRo4Kku98A' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -385,13 +385,13 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 
 ## Создание пользователя
 
-Для создания в системе нового пользователя используется метод `createUser`. В теле запроса передаются данные пользователя - адрес email, имя пользователя в системе, его пароль, дополнительно можно указать телефон. В результате выполнения метода будет зарегистрирован новый пользователь с указанными данными. Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/Users/createNewUser).
+Для создания в системе нового пользователя используется метод `createUser`. В теле запроса передаются данные пользователя - адрес email, имя пользователя в системе, его пароль, дополнительно можно указать телефон. В результате выполнения метода будет зарегистрирован новый пользователь с указанными данными. Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/Users/createNewUser).
 
 **Важно!** При создании нового пользователя используется [токен клиента](#создание-клиентского-токена)
 
 Пример выполнения запроса `createUser`
 
-**POST  https://moodhood-api.livedigital.space/v1/users**
+**POST  https://moodhood-api.teleboss.ru/v1/users**
 
 ```json 
 {
@@ -406,7 +406,7 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/users' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/users' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiSzZEX1ZNQWRrc25CQnpjaTJnRlFBIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc0MTEyOSwiZXhwIjoxNjU2MzQ1OTI5fQ.Qy-zwBGwjyWzPF8uXYtla9IOvCfOCeQ9uzCaUo8Q7pM' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -439,13 +439,13 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/users'
 * **role_space_moderator** - модератор,
 * **role_space_user** - пользователь.
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceInvites/createInvite).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceInvites/createInvite).
 
 В результате выполнения запроса возвращается идентификатор, по которому далее следует активировать инвайт (см. ниже). 
 
 Пример выполнения запроса `createInvite`
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/invites**
+**POST  https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/invites**
 
 ```json 
 {
@@ -456,7 +456,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/users'
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/invites' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/invites' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY' \
 --header 'Content-Type: application/json' \
 --header 'Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY; refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6InJlZnJlc2hUb2tlbiIsImNJZCI6IjYyYTA5ZmM3MDJmODZjZTM3YTkzODZmMSIsImp0aSI6ImRoUXhxM2ZyV1V0QktOZUhsd1o3cCIsInNnbiI6ImI4MTEwZjhmYjYiLCJpYXQiOjE2NTY1Mzg4NjQsImV4cCI6MTY1ODM1MzI2NH0.INhr4aj0cY-l-CbyFL0KkV4nz-2-vmRMpdVB2MWTg2o; trClId=LhAdDHgbA5gqFpklo8rw' \
@@ -477,18 +477,18 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 
 ### Активация инвайта
 
-Созданный инвайт для группы необходимо активировать. Для этого следует выполнить метод `activateInvite`, авторизовавшись с помощью `access_token` того пользователя, которому должен быть предоставлен доступ. Методу в качестве параметров в строке запроса передаются идентификатор группы и идентификатор инвайта (см. предыдущий раздел). Тело запроса пустое. Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceInvites/activateInvite).
+Созданный инвайт для группы необходимо активировать. Для этого следует выполнить метод `activateInvite`, авторизовавшись с помощью `access_token` того пользователя, которому должен быть предоставлен доступ. Методу в качестве параметров в строке запроса передаются идентификатор группы и идентификатор инвайта (см. предыдущий раздел). Тело запроса пустое. Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceInvites/activateInvite).
 
 Пример выполнения запроса `activateInvite`
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/invites/62bccb101f211e947a00da47/activate**
+**POST  https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/invites/62bccb101f211e947a00da47/activate**
 
 где *62bcc725721aeb718445daf7* - идентификатор группы, *62bccb101f211e947a00da47* - идентификтаор инвайта.
  
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/invites/62bccb101f211e947a00da47/activate' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/invites/62bccb101f211e947a00da47/activate' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY' \
 --header 'Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY; refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6InJlZnJlc2hUb2tlbiIsImNJZCI6IjYyYTA5ZmM3MDJmODZjZTM3YTkzODZmMSIsImp0aSI6ImRoUXhxM2ZyV1V0QktOZUhsd1o3cCIsInNnbiI6ImI4MTEwZjhmYjYiLCJpYXQiOjE2NTY1Mzg4NjQsImV4cCI6MTY1ODM1MzI2NH0.INhr4aj0cY-l-CbyFL0KkV4nz-2-vmRMpdVB2MWTg2o; trClId=LhAdDHgbA5gqFpklo8rw'
 ```
@@ -503,13 +503,13 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 * **role_room_user** - пользователь,
 * **role_room_moderator** - модератор.
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomRoles/grantRoleToUserAtRoom).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomRoles/grantRoleToUserAtRoom).
 
 В результате выполнения запроса пользователю задается роль для указанной комнаты.
 
 Пример выполнения запроса `grantRole`
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/roles**
+**POST  https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/roles**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы, *60d55c0eb9ef88ab17b0aabb* - идентификатор комнаты.
 
@@ -523,7 +523,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/rooms/62bcc7341f211e444300da37/roles' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/rooms/62bcc7341f211e444300da37/roles' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY' \
 --header 'Content-Type: application/json' \
 --header 'Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6InJlZnJlc2hUb2tlbiIsImNJZCI6IjYyYTA5ZmM3MDJmODZjZTM3YTkzODZmMSIsImp0aSI6ImRoUXhxM2ZyV1V0QktOZUhsd1o3cCIsInNnbiI6ImI4MTEwZjhmYjYiLCJpYXQiOjE2NTY1Mzg4NjQsImV4cCI6MTY1ODM1MzI2NH0.INhr4aj0cY-l-CbyFL0KkV4nz-2-vmRMpdVB2MWTg2o; trClId=LhAdDHgbA5gqFpklo8rw' \
@@ -553,11 +553,11 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 
 **Примечание**. При переходе в комнату по ссылке, которая будет сгенерирована в результате выполнения метода, у пользователя будут запрошены персональные данные, такие как его эл.почта, телефон и т.д. Эти данные потом используются в аналитических отчетах. Если какие-то данные известны заранее, то можно передать их в запросе, указав в теле запроса значения `email`, `phone` и другие поля, которые могут быть запрошены у пользователя на странице входа. Если эти данные были переданы в теле запроса, то они уже не запрашиваются у пользователя повторно на форме входа в вебинар.
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomGenerateAccess/roomGenerateAccess).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomGenerateAccess/roomGenerateAccess).
 
 Пример выполнения запроса `generateAccess`
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/generate-access**
+**POST  https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/generate-access**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы, *60d55c0eb9ef88ab17b0aabb* - идентификатор комнаты.
 
@@ -576,7 +576,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/rooms/62bcc7341f211e444300da37/generate-access' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/rooms/62bcc7341f211e444300da37/generate-access' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY' \
 --header 'Content-Type: application/json' \
 --header 'Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6InJlZnJlc2hUb2tlbiIsImNJZCI6IjYyYTA5ZmM3MDJmODZjZTM3YTkzODZmMSIsImp0aSI6ImRoUXhxM2ZyV1V0QktOZUhsd1o3cCIsInNnbiI6ImI4MTEwZjhmYjYiLCJpYXQiOjE2NTY1Mzg4NjQsImV4cCI6MTY1ODM1MzI2NH0.INhr4aj0cY-l-CbyFL0KkV4nz-2-vmRMpdVB2MWTg2o; trClId=LhAdDHgbA5gqFpklo8rw' \
@@ -593,7 +593,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 
 В результате выполнения запроса пользователю задается роль для указанной комнаты и в теле ответа возвращается параметр `url`, содержащий ссылку для доступа вида:  
 
-**https://edu.livedigital.space/room/hMInKY6FoM?participantName=JohnSmith&accessToken=someAccessToken**
+**https://edu.teleboss.ru/room/hMInKY6FoM?participantName=JohnSmith&accessToken=someAccessToken**
 
 Ссылка содержит значения `participantName`, равное указанному в запросе параметру `username` и уже сгенерированный токен пользователя `accessToken`, таким образом нет необходимости отдельно его генерировать и подставлять в ссылку.
 
@@ -610,12 +610,12 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 <html>
  <head>
   <meta charset="utf-8" />
-  <title>livedigital</title>
+  <title>teleboss</title>
  </head>
  <body>
-  <p>Пример вставки фрейма livedigital</p>
+  <p>Пример вставки фрейма TeleBoss</p>
   <iframe
-    src="https://edu.livedigital.space/room/<room_alias>?participantName=IvanIvanov&refreshToken=someTokenHere"
+    src="https://edu.teleboss.ru/room/<room_alias>?participantName=IvanIvanov&refreshToken=someTokenHere"
     id="userplayer"
     frameborder="0"
     width="880px"
@@ -632,7 +632,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 * **id** - устаревший атрибут для iFrame, оставленный для совместимости с ранними версиями браузеров, значение может быть любым.
 * **frameborder** - ширина рамки вокруг фрейма (следует оставить 0 ).
 * **width/height** - ширина/высота для отображения фрейма на странице.
-* **disableSupport** - отключает техподдержку livedigital.
+* **disableSupport** - отключает техподдержку TeleBoss.
 * **allow** - список разрешений для комнаты, где через знак “;” перечисляются какие возможности будут разрешены для комнаты. Так, в примере кода выше указаны следующие возможности:
    * *camera* - разрешено использование камеры;
    * *microphone* - разрешено использование микрофона;
@@ -651,7 +651,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 
 # Отслеживание событий в группе
 
-API livedigital предоставляет возможность отслеживать события при помощи механизма вебхуков. Это такой механизм отправки обратных запросов с уведомлением при наступлении в системе определенного особытия, благодаря чему на такие события можно подписаться. Пример события, для которого можно создать вебхук и подписаться, это, например, начало или окончание звонка. При наступлении такого события сервисом livedigital будет выполнен POST-запрос на заранее заданный URL. Интегратору на своей стороне следует реализовать обработку такого запроса. Например, можно реализовать отправку уведомлений администратору группы. При этом следует иметь в виду, что доставка уведомлений не гарантирована. Если POST-запрос не был обработан, он будет отправлен снова с определенным интервалом. Всего будет сделано 3 таких попытки. Если запрос трижды не был обработан на стороне интегратора, то он больше не отправляется.
+API TeleBoss предоставляет возможность отслеживать события при помощи механизма вебхуков. Это такой механизм отправки обратных запросов с уведомлением при наступлении в системе определенного особытия, благодаря чему на такие события можно подписаться. Пример события, для которого можно создать вебхук и подписаться, это, например, начало или окончание звонка. При наступлении такого события сервисом TeleBoss будет выполнен POST-запрос на заранее заданный URL. Интегратору на своей стороне следует реализовать обработку такого запроса. Например, можно реализовать отправку уведомлений администратору группы. При этом следует иметь в виду, что доставка уведомлений не гарантирована. Если POST-запрос не был обработан, он будет отправлен снова с определенным интервалом. Всего будет сделано 3 таких попытки. Если запрос трижды не был обработан на стороне интегратора, то он больше не отправляется.
 
 **Примечание.** Механизм вебхуков доступен на любом платном тарифе и недоступен для тарифного плана Free.
 
@@ -666,9 +666,9 @@ API livedigital предоставляет возможность отслежи
 
 ```
 
-Здесь `url` это адрес, по которому будет выполнен обратный POST-запрос сервисом livedigital. Значение `secret` - ключ для проверки валидности созданного вебхука (см. описание ниже). `isActive` - признак того, что вебхук активен.
+Здесь `url` это адрес, по которому будет выполнен обратный POST-запрос сервисом TeleBoss. Значение `secret` - ключ для проверки валидности созданного вебхука (см. описание ниже). `isActive` - признак того, что вебхук активен.
 
-В результате наступления события сервис livedigital отправит на указанный URL запрос, передав в теле запроса данные следующего вида:
+В результате наступления события сервис TeleBoss отправит на указанный URL запрос, передав в теле запроса данные следующего вида:
 
 ```json
 {
@@ -701,7 +701,7 @@ API livedigital предоставляет возможность отслежи
 crypto.createHmac('sha256', secret).update(JSON.stringify(body), 'utf8').digest('hex');
 ```
 
-Для работы с вебхуками API livedigital предоставляет указанные ниже методы.
+Для работы с вебхуками API TeleBoss предоставляет указанные ниже методы.
 
 **Важно!** При создании вебхуков для авторизации используется [токен пользователя](#создание-токена-пользователя) — владельца группы.
 
@@ -709,11 +709,11 @@ crypto.createHmac('sha256', secret).update(JSON.stringify(body), 'utf8').digest(
 
 Для создания вебхука используется запрос `createWebhook`. В качестве параметра в строке запроса указывается идентификатор группы (см. [Создание группы](#создание-группы)), а в теле запроса передается параметр `url` - адрес, по которому должен быть выполнен обратный запрос с уведомлением о наступившем событии. 
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/WebHook/CreateWebHook).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/WebHook/CreateWebHook).
 
 Пример выполнения запроса `createWebhook`
 
-**POST https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
+**POST https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы.
 
@@ -726,7 +726,7 @@ crypto.createHmac('sha256', secret).update(JSON.stringify(body), 'utf8').digest(
 Пример кода для cURL
 
 ```
-curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/webhook' \
+curl --location --request POST 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/webhook' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJhdWQiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjSWQiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJqdGkiOiI1ZGxDZ0pxRzZ1dFFycjNqSTFjSmMiLCJpYXQiOjE2NTUzMTYwNjgsImV4cCI6MTY1NTkyMDg2OH0.5vTOaqS77Yl-4cYT1WM5DdKbo8-I__bxB2DX5kyFaTA' \
 --header 'Content-Type: text/plain' \
 --data-raw '{
@@ -762,11 +762,11 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 * `url` - адрес, по которому выполняется обратный запрос с уведомлением о событии.
 * `isActive` - признак активности вебхука, `true` - вебхук активен, или `false` - вебхук заблокирован. 
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/WebHook/UpdateWebHook).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/WebHook/UpdateWebHook).
 
 Пример выполнения запроса `createWebhook`
 
-**PUT https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
+**PUT https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы.
 
@@ -780,7 +780,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 Пример кода для cURL
 
 ```
-curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/webhook' \
+curl --location --request PUT 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/webhook' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJhdWQiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjSWQiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJqdGkiOiI1ZGxDZ0pxRzZ1dFFycjNqSTFjSmMiLCJpYXQiOjE2NTUzMTYwNjgsImV4cCI6MTY1NTkyMDg2OH0.5vTOaqS77Yl-4cYT1WM5DdKbo8-I__bxB2DX5kyFaTA' \
 --header 'Content-Type: text/plain' \
 --data-raw '{
@@ -806,18 +806,18 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 
 Чтобы получить данные созданного ранее вебхука используется метод `getWebhook`. Запрос похож на создание вебхука, только используется тип запроса `GET`. В качестве параметра в строке запроса указывается идентификатор группы (см. [Создание группы](#создание-группы)). 
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/WebHook/GetWebHook).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/WebHook/GetWebHook).
 
 Пример выполнения запроса `createWebhook`
 
-**GET https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
+**GET https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы.
 
 Пример кода для cURL
 
 ```
-curl --location --request GET 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/webhook' \
+curl --location --request GET 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/webhook' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJhdWQiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjSWQiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJqdGkiOiI1ZGxDZ0pxRzZ1dFFycjNqSTFjSmMiLCJpYXQiOjE2NTUzMTYwNjgsImV4cCI6MTY1NTkyMDg2OH0.5vTOaqS77Yl-4cYT1WM5DdKbo8-I__bxB2DX5kyFaTA' \
 --header 'Content-Type: text/plain' \
 --data-raw '{
@@ -843,18 +843,18 @@ curl --location --request GET 'https://moodhood-api.livedigital.space/v1/spaces/
 
 Если нужно удалить вебхук для группы, то используется метод `deleteWebhook`. Выполняется запрос типа `DELETE`. В качестве параметра в строке запроса указывается идентификатор группы (см. [Создание группы](#создание-группы)).
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/WebHook/DeleteWebHook).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/WebHook/DeleteWebHook).
 
 Пример выполнения запроса `deleteWebhook`
 
-**DELETE https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
+**DELETE https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы.
 
 Пример кода для cURL
 
 ```
-curl --location --request DELETE 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/webhook' \
+curl --location --request DELETE 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/webhook' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJhdWQiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjSWQiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJqdGkiOiI1ZGxDZ0pxRzZ1dFFycjNqSTFjSmMiLCJpYXQiOjE2NTUzMTYwNjgsImV4cCI6MTY1NTkyMDg2OH0.5vTOaqS77Yl-4cYT1WM5DdKbo8-I__bxB2DX5kyFaTA' \
 --header 'Content-Type: text/plain' \
 ```
@@ -865,18 +865,18 @@ curl --location --request DELETE 'https://moodhood-api.livedigital.space/v1/spac
 
 Если в ходе проверки валидности вебхука выяснилось, что сигнатуры не совпадают и есть подозрение, что ключ скомпрометирован, то его можно обновить. Для этого используется метод `refreshSecret`. В качестве параметра в строке запроса указывается идентификатор группы (см. [Создание группы](#создание-группы)), для которого нужно обновить ключ. Запрос выполняется по методу `PUT`.  
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/WebHook/RefreshSecretWebHook).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/WebHook/RefreshSecretWebHook).
 
 Пример выполнения запроса `refreshSecret`
 
-**PUT https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook/refresh-secret**
+**PUT https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/webhook/refresh-secret**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы.
 
 Пример кода для cURL
 
 ```
-curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/webhook/refresh-secret' \
+curl --location --request PUT 'https://moodhood-api.teleboss.ru/v1/spaces/62bcc725721aeb718445daf7/webhook/refresh-secret' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJhdWQiOiJjbGllbnQiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjSWQiOiI2MmEwOWZjNzAyZjg2Y2UzN2E5Mzg2ZjEiLCJqdGkiOiI1ZGxDZ0pxRzZ1dFFycjNqSTFjSmMiLCJpYXQiOjE2NTUzMTYwNjgsImV4cCI6MTY1NTkyMDg2OH0.5vTOaqS77Yl-4cYT1WM5DdKbo8-I__bxB2DX5kyFaTA' \
 --header 'Content-Type: text/plain' \
 ```
@@ -901,11 +901,11 @@ API позволяет выгружать запись проведенного 
 
 В строке запроса `RedirectToDownloadRoomRecord` обязательно передаются идентификаторы группы, комнаты и записи - параметры `spaceId`, `roomId` и `recordId`. Идентификаторы группы и комнаты для заданной вебинарной комнаты должны быть известны (см. раздел [Создание групп и комнат](#создание-групп-и-комнат)). А получить идентификатор записи можно двумя способами: с помощью вебхуков или с помощью специального метода (см. описание обоих способов ниже).
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomRecords/RedirectToDownloadRoomRecord).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomRecords/RedirectToDownloadRoomRecord).
 
 Пример выполнения запроса `RedirectToDownloadRoomRecord`
 
-**GET https://moodhood-api.livedigital.space/v1/spaces/{spaceId}/rooms/{roomId}/records/download/{recordId}**
+**GET https://moodhood-api.teleboss.ru/v1/spaces/{spaceId}/rooms/{roomId}/records/download/{recordId}**
 
 В результате выполнения запроса возвращается текстовая строка, содержащая URL записи, вида https://some.url/record.mp4.
 
@@ -931,11 +931,11 @@ API позволяет выгружать запись проведенного 
 
 Если вебхуки для отслеживания событий не настроены, то можно использовать метод `GetRecords` для получения списка идентификаторов всех записей. После чего выбрать нужный идентификатор и использовать его в методе `RedirectToDownloadRoomRecord`. 
 
-В строке запроса для метода `GetRecords` передаются обязательные параметры `spaceId` и `roomId` - идентификаторы группы и комнаты, записи для которых нужно получить, а также дополнительные параметры для фильтрации записей, например, `dateFrom` и `dateTo` - ограничения по датам начала и конца периода, за который нужны записи. Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomRecords/get_spaces__spaceId__rooms__roomId__records).
+В строке запроса для метода `GetRecords` передаются обязательные параметры `spaceId` и `roomId` - идентификаторы группы и комнаты, записи для которых нужно получить, а также дополнительные параметры для фильтрации записей, например, `dateFrom` и `dateTo` - ограничения по датам начала и конца периода, за который нужны записи. Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomRecords/get_spaces__spaceId__rooms__roomId__records).
 
 Пример выполнения запроса `GetRecords`
 
-**GET https://moodhood-api.livedigital.space/v1/spaces/{spaceId}/rooms/{roomId}/records**
+**GET https://moodhood-api.teleboss.ru/v1/spaces/{spaceId}/rooms/{roomId}/records**
 
 В результате выполнения запроса возвращается JSON, содержащий список `items`, где каждый элемент списка это объект типа `RoomRecord`, а поле `id` этого объекта это идентификатор записи. 
 
@@ -963,7 +963,7 @@ API позволяет выгружать запись проведенного 
 
 Значение `id` для нужной записи необходимо передать в качестве параметра `recordId` в вызове метода `RedirectToDownloadRoomRecord` для получения ссылки на запись.
 
-**Примечание!** Помимо получения списка записей и загрузки записи с видео API позволяет проводить другие операции с видео, например, стартовать и останавливать запись для комнаты, удалять видеозаписи и др. Полный набор методов для работы с видео можно посмотреть [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomRecords). 
+**Примечание!** Помимо получения списка записей и загрузки записи с видео API позволяет проводить другие операции с видео, например, стартовать и останавливать запись для комнаты, удалять видеозаписи и др. Полный набор методов для работы с видео можно посмотреть [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomRecords). 
 
 ## Выгрузка аналитики по проведенному вебинару или конференции
 
@@ -973,21 +973,21 @@ API позволяет выгружать запись проведенного 
 
 Идентификаторы группы и комнаты для заданной вебинарной комнаты должны быть известны (см. раздел [Создание групп и комнат](#создание-групп-и-комнат)). А получить идентификатор вызова `callId` можно с помощью метода `analyticsCalls` (см. описание ниже).
 
-Полная спецификация метода `getRoomAnalyticsReport` приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceAnalytics/getRoomAnalyticsReport).
+Полная спецификация метода `getRoomAnalyticsReport` приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceAnalytics/getRoomAnalyticsReport).
 
 Пример выполнения запроса `getRoomAnalyticsReport`:
 
-**GET https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/analytics/report?roomId=60d55c0eb9ef88ab17b0aabb&callId=60d55c0eb9ef88ab17b0aabb&format=xlsx**
+**GET https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/analytics/report?roomId=60d55c0eb9ef88ab17b0aabb&callId=60d55c0eb9ef88ab17b0aabb&format=xlsx**
 
 В результате выполнения запроса возвращается аналитика по событию в формате JSON или XLSX.
 
 Для получения `callId` нужно использовать метод `analyticsCalls`. В строке запроса как часть URL обязательно передается идентификатор группы `spaceId`, а также в качестве обязательных параметров запроса передается идентификатор комнаты и дата, за которую надо получить аналитику - параметры `roomId` и `date`. Дополнительно можно указать, например, фильтр по минимальному количеству участников события. 
 
-Полная спецификация метода приведена [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceAnalytics/analyticsCalls).
+Полная спецификация метода приведена [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceAnalytics/analyticsCalls).
 
 Пример выполнения запроса `analyticsCalls`:
 
-**GET https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/analytics/calls?roomId=60d55c0eb9ef88ab17b0aabb&date=2023-08-01T12%3A25%3A40.253Z**
+**GET https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/analytics/calls?roomId=60d55c0eb9ef88ab17b0aabb&date=2023-08-01T12%3A25%3A40.253Z**
 
 В результате выполнения запроса возвращается JSON со списком завершенных вызовов за указанную дату. 
 
@@ -1029,7 +1029,7 @@ API позволяет выгружать запись проведенного 
 
 Тут есть определённая путанница в авторизации. В соответствии с требованиями стандарта RFC oauth2 при получении токена с `grant_type: password`, поле с идентификатором пользователя обязано именоваться username. Но идентификатором пользователя у нас выступает email, так как username не уникален. Таким образом, при получении токена пользователя в поле username надо указывать email пользователя.
 
-**Запрос GET `https://moodhood-api.livedigital.space/v1/spaces/` возвращает ошибку авторизации *403 Данный метод запрещен для пользователя*. Токен запрашиваю: `"grant_type": "client_credentials"` - возможно, тут надо использовать другой тип? Какой тип следует указать для получения отчетов по работе в комнате, информации по вебинарам?**
+**Запрос GET `https://moodhood-api.teleboss.ru/v1/spaces/` возвращает ошибку авторизации *403 Данный метод запрещен для пользователя*. Токен запрашиваю: `"grant_type": "client_credentials"` - возможно, тут надо использовать другой тип? Какой тип следует указать для получения отчетов по работе в комнате, информации по вебинарам?**
 
 Создавать спэйсы\комнаты и получать данные по ним можно только под токеном пользователя - `grant_type:password`. Подробнее [см. здесь](#создание-токена-пользователя).
 
@@ -1039,7 +1039,7 @@ API позволяет выгружать запись проведенного 
 
 **Можно ли пригшашать в комнату пользователя по предварительной авторизации (например, используя refresh hash), чтобы ему ничего не пришлось вводить при входе в комнату, и он сразу заходил в нее?**
 
-Есть метод `roomGenerateAccess` полностью автоматизирующий этот процесс, подробная [инструкция здесь](#предоставление-прав-доступа-к-комнате-незарегистрированному-пользователю). Спецификация метода [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomGenerateAccess/roomGenerateAccess).
+Есть метод `roomGenerateAccess` полностью автоматизирующий этот процесс, подробная [инструкция здесь](#предоставление-прав-доступа-к-комнате-незарегистрированному-пользователю). Спецификация метода [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomGenerateAccess/roomGenerateAccess).
 
 **А по пользователям — доступны только эти переменные? Или можно передавать еще и ID с платформы?
 Актуально, если, например, сменил почту и/или имя, а ID на платформе постоянный.**
@@ -1049,12 +1049,12 @@ API позволяет выгружать запись проведенного 
 ## Группы и комнаты
 
 **В инструкции указан пример URL
-`https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/generate-access` - там всегда дважны используется идентфикатор комнаты (<room_alias>)? Получается, что запрос пойдет такой `https://moodhood-api.livedigital.space/v1/spaces/<room_alias>/rooms/<room_alias>/generate-access`**
+`https://moodhood-api.teleboss.ru/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/generate-access` - там всегда дважны используется идентфикатор комнаты (<room_alias>)? Получается, что запрос пойдет такой `https://moodhood-api.teleboss.ru/v1/spaces/<room_alias>/rooms/<room_alias>/generate-access`**
 
 Не совсем, вот корректная структура запроса:
-`https://moodhood-api.livedigital.space/v1/spaces/<space_id>/rooms/<room_id>/generate-access`
+`https://moodhood-api.teleboss.ru/v1/spaces/<space_id>/rooms/<room_id>/generate-access`
 
-Более подробное описание всех параметров запроса можно посмотреть [в Swagger](https://moodhood-api.livedigital.space/doc/#/RoomGenerateAccess/roomGenerateAccess).
+Более подробное описание всех параметров запроса можно посмотреть [в Swagger](https://moodhood-api.teleboss.ru/doc/#/RoomGenerateAccess/roomGenerateAccess).
 
 **Обратил внимание, что ссылка формируется в примере только с room_alias.**
 
@@ -1064,13 +1064,13 @@ API позволяет выгружать запись проведенного 
 
 Группа всегда есть. К группе можно относиться просто как к директории для комнат. Можно создать их несколько, а можно все комнаты хранить в одной группе. Это родительский компонент для комнаты и всех имеющихся сущностей в конференции.
 
-**В ссылке-приглашении на комнату `https://edu.livedigital.space/room/0mrw9W62rC` не указан spaceId, значит группа опцинальна?**
+**В ссылке-приглашении на комнату `https://edu.teleboss.ru/room/0mrw9W62rC` не указан spaceId, значит группа опцинальна?**
 
 В ссылке используется alias, это сделано просто для сокращения длины ссылки, так как alias сам по себе уникален.
 
 **Могу ли я сделать запрос без указания spaceId? Чтобы создателю было достаточно лишь указать просто ссылку на комнату**
 
-Нет, если посмотреть [в Swagger](https://moodhood-api.livedigital.space/doc/#/SpaceRooms), то все запросы в API, касающиеся комнат содержат в URL и идентификатор spaceId тоже.
+Нет, если посмотреть [в Swagger](https://moodhood-api.teleboss.ru/doc/#/SpaceRooms), то все запросы в API, касающиеся комнат содержат в URL и идентификатор spaceId тоже.
 
 **Чем отличается группы от комнат и зачем они нужны (группы) на одной учетой записи? Не до конца понятна логика.**
 
@@ -1084,18 +1084,18 @@ API позволяет выгружать запись проведенного 
 
 **Нам нужна возможность в начале сессии передать Email пользователя, чтобы в конце сессии получить данные о посещаемости. В идеале нам надо каким-то методом отправлять запрос и получать список посещений, в виде адреса емейл и времени, проведённого на занятии, а также общее время встречи.**
 
-В [этом разделе](https://moodhood-api.livedigital.space/doc/#/RoomGenerateAccess/roomGenerateAccess) описано, как сгенерировать готовую ссылку для iFrame для вашего пользователя с нужными правами и идентификатором пользователя из вашей системы, по которому вы сможете найти в аналитическом отчёте информацию о его активности в звонке, сообщениях в чате и др.
+В [этом разделе](https://moodhood-api.teleboss.ru/doc/#/RoomGenerateAccess/roomGenerateAccess) описано, как сгенерировать готовую ссылку для iFrame для вашего пользователя с нужными правами и идентификатором пользователя из вашей системы, по которому вы сможете найти в аналитическом отчёте информацию о его активности в звонке, сообщениях в чате и др.
 
 **Какие методы в Swagger отвечают за возможность показа статистики пользователям? Например, вебинар был обучающий. Getcourse, например, предоставляет доступ к шкале достижения оценок, статистике прохождения уроков, посещаемости, расписанию уроков.**
 
 Вы можете собирать статистику по участникам мероприятий и результаты голосований по API в формате JSON. И из этих данных на своей стороне формировать любые типы отчетов. Вам могут пригодиться следующие методы:
-* Метод для получения статистики: [getRoomAnalyticsReport](https://moodhood-api.livedigital.space/doc/#/SpaceAnalytics/getRoomAnalyticsReport)
-* Метод для работы с участниками: [ManagementAPI](https://moodhood-api.livedigital.space/doc/#/RoomGenerateAccess/roomGenerateAccess)
-* Метод для работы с опросами: [RoomPolls](https://moodhood-api.livedigital.space/doc/#/RoomPolls)   
+* Метод для получения статистики: [getRoomAnalyticsReport](https://moodhood-api.teleboss.ru/doc/#/SpaceAnalytics/getRoomAnalyticsReport)
+* Метод для работы с участниками: [ManagementAPI](https://moodhood-api.teleboss.ru/doc/#/RoomGenerateAccess/roomGenerateAccess)
+* Метод для работы с опросами: [RoomPolls](https://moodhood-api.teleboss.ru/doc/#/RoomPolls)   
 
 **Нужно получить статистику по вебинару, проведенному в комнате с заданными spaceId > roomId в определенное время. Какой метод для этого используется?**
 
-Первым делом необходимо запросить звонки, совершённые в комнате за интересующую дату с помощью метода [analyticsCalls](https://moodhood-api.livedigital.space/doc/#/SpaceAnalytics/analyticsCalls). Затем, используя необходимый `callId`, получить аналитический отчёт в необходимом вам формате с помощью метода [getRoomAnalyticsReport](https://moodhood-api.livedigital.space/doc/#/SpaceAnalytics/getRoomAnalyticsReport).
+Первым делом необходимо запросить звонки, совершённые в комнате за интересующую дату с помощью метода [analyticsCalls](https://moodhood-api.teleboss.ru/doc/#/SpaceAnalytics/analyticsCalls). Затем, используя необходимый `callId`, получить аналитический отчёт в необходимом вам формате с помощью метода [getRoomAnalyticsReport](https://moodhood-api.teleboss.ru/doc/#/SpaceAnalytics/getRoomAnalyticsReport).
 
 **Статистика доступна для всех? Статистика пользователей и их действий (реакций, опросов, чатов). Говорят, у беcплатных групп нету статистики?**
 
@@ -1131,7 +1131,7 @@ clientId и clientSecret - это только ваши данные. К дан�
 
 **Какой метод используется для получения списка записей?**
 
-Документацию по работе с записью вебинаров можно посмотреть по [этой ссылке](https://moodhood-api.staging.livedigital.space/doc/#/RoomRecords/get_spaces__spaceId__rooms__roomId__records).
+Документацию по работе с записью вебинаров можно посмотреть по [этой ссылке](https://moodhood-api.staging.teleboss.ru/doc/#/RoomRecords/get_spaces__spaceId__rooms__roomId__records).
 
 **Cмена типа с вебинара на конференцию возможна после проведения? Это на что-то влияет, на представление комнаты, например?**
 
