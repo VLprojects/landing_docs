@@ -673,7 +673,7 @@ curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces
 
 Пример выполнения запроса `analyticsCalls`
 
-**POST  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/analytics/calls?roomId=60d55c0eb9ef88ab17b0aabb&date=2024-01-01**
+**GET  https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/analytics/calls?roomId=60d55c0eb9ef88ab17b0aabb&date=2024-01-01**
 
 где *60d55c0eb9ef88ab17b0aabb* - идентификатор группы, *60d55c0eb9ef88ab17b0aabb* - идентификатор комнаты, *date* - дата звонка.
 
