@@ -153,7 +153,10 @@ curl -X 'POST' \
 Пример кода для cURL:
 
 ```
-{
+curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62b0e24a81ad6df4bb583c58/rooms' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoiZXZ5ZlJWRWsyRGozVFFsYzF5UnBLIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NTc1ODAwMiwiZXhwIjoxNjU2MzYyODAyfQ.hzXW-dHJD0TUtLY22yefmZogvSanEbb70zRo4Kku98A' \
+--header 'Content-Type: application/json' \
+--data-raw '{
   "id": "60d55c0eb9ef88ab17b0aabb",
   "appId": "60d55c0eb9ef88ab17b0aabb",
   "channelId": "60d55c0eb9ef88ab17b0aabb",
@@ -361,8 +364,8 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 
 Дополнительно в теле запроса можно передать следующие параметры:
 
-* `externalUserId` \- любой буквенно-циферный идентификатор, по которому интегратор может сопоставить пользователя системы с пользователем своего сервиса, например, в аналитическом отчёте;  
-* `externalMeetingId` \- необязательный параметр, который позволяет LMS системе передавать уникальный для неё идентификатор каждой конкретного встречи, на которую приходит участник;  
+* `externalUserId` \- любой буквенно-циферный идентификатор пользователя, по которому интегратор может сопоставить пользователя системы с пользователем своего сервиса, например, в аналитическом отчёте. Рекомендуем создавать его уникальным для каждого пользователя, чтобы облегчить процесс идентификации в аналитическом отчёте;  
+* `externalMeetingId` \- любой буквенно-циферный идентификатор для конкретной встречи. Необязательный параметр, который позволяет LMS системе передавать уникальный для неё идентификатор каждой конкретной встречи, на которую приходит участник. Рекомендуем создавать его уникальным для каждого пользователя, чтобы облегчить процесс идентификации в аналитическом отчёте;  
 * `ttl` \- время жизни ссылки в секундах (по умолчанию 86400 секунд). Максимальное значение \- 432000 секунд. Рекомендуем передавать длительность на 2 часа больше, чем ожидаемая длительность мероприятия.  
 * `isPermanent` \- отвечает за возможность перейти по одной ссылке на встречу нескольким участникам;  
 * `email` \- эл. почта пользователя,  
@@ -392,7 +395,6 @@ curl --location --request PUT 'https://moodhood-api.livedigital.space/v1/spaces/
 Пример кода cURL:
 
 ```
-{
 curl --location --request POST 'https://moodhood-api.livedigital.space/v1/spaces/62bcc725721aeb718445daf7/rooms/62bcc7341f211e444300da37/generate-access' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmFiNWE4NGIwY2U2ZWUzMWIwOTk3YjMiLCJhdWQiOiJ1c2VyIiwidHlwZSI6ImFjY2Vzc1Rva2VuIiwiY0lkIjoiNjJhMDlmYzcwMmY4NmNlMzdhOTM4NmYxIiwianRpIjoic2YxOHFtdkV4Ymdzc2pNV0hRNWVyIiwic2duIjoiYjgxMTBmOGZiNiIsImlhdCI6MTY1NjUzODg2NCwiZXhwIjoxNjU3MTQzNjY0fQ.bNopnFmGc7bEX8Jy8GkcojCA1SGy1wm7xIhFbO9kzVY' \
 --header 'Content-Type: application/json' \
@@ -880,11 +882,50 @@ API livedigital предоставляет возможность LMS автом
 }
 ```
 
-Значение `id` \- это и есть идентификатор вызова, который необходимо передать в качестве параметра `callId,` в методе `getRoomAnalyticsReport` для получения аналитики.
+Значение `id` \- это и есть идентификатор вызова, который необходимо передать в качестве параметра `callId`, в методе `getRoomAnalyticsReport` для получения аналитики.
 
 **Важно**\! Мы рекомендуем собирать данные аналитики после окончания мероприятия, добавив небольшой дополнительный промежуток времени. Также можно делать это после получения вебхука (webhook) о завершении, которое приходит только после начала мероприятия. Это поможет избежать ситуации, когда вы получаете пустые данные, например, если администратор случайно зашел в комнату до начала мероприятия и вышел, а затем вернулся к старту встречи. В этом случае звонок завершится, и уведомление придет, но данные будут не по самому мероприятию.
 
 # **Дополнительная информация**
+
+## **Построение дашбордов по успеваемости прохождения курсов пользователями в различных разрезах**
+
+При вызове метода generateAccess, которым генерируется ссылка на вход в комнату: [`https://moodhood-api.livedigital.space/v1//spaces/{spaceId}/rooms/{roomId}/generate-access`](https://moodhood-api.livedigital.space/v1/spaces/60d55c0eb9ef88ab17b0aabb/rooms/60d55c0eb9ef88ab17b0aabb/generate-access)
+необходимо указать два дополнительных параметра:
+
+`"externalUserId": "string"` \- Уникальный идентификатор пользователя в вашей LMS системе.  Пользователь может быть учеником, преподавателем или иметь какую-то другую роль. Он должен быть одинаковым для одного и того же ученика на всем времени его обучения. Для преподавателя \- аналогично.
+`"externalMeetingId": "string"` \- Уникальный идентификатор конкретного занятия. Должен быть одинаковым для всех пользователей посещающих это занятие.  Может генерироваться как угодно И используется только для связи данных о поведении ученика во время конкретного занятия с метаданными о самом занятии.
+
+Далее необходимо настроить передача метаданных о занятии и ученике. Метод storeExternalUserMeta [`https://moodhood-api.livedigital.space/doc/#/Users/storeExternalUserMeta`](https://moodhood-api.livedigital.space/doc/#/Users/storeExternalUserMeta) нужно вызывать для каждой ссылки сгенерированной через generateAccess.
+
+`"externalUserId": "string"` \- те же самые значения, что указывались выше в generateAccess ссылке.
+`"externalMeetingId": "string"` \- те же самые значения, что указывались выше в generateAccess ссылке.
+`"meta": {}` \- передается дополнительная информация о пользователей и о занятии. Формат данных (JSON) должен быть следующим:
+
+```
+{
+"lesson_scheduled_start_dt" : "2024-12-12 09:00"  //плановое дата время начала урока по UTC
+  "lesson_scheduled_end_dt" : "2024-12-12 10:00"   //плановое дата время окончания урока по UTC, опцинально
+  "lesson_name" : "Эмоции: радость"  // Можно также указывать, другие параметры урока, которые было бы полезно видеть в аналитике или использовать в дальнейшем для интеграции
+ 
+  "user_fullname" : "Иван Петров" //имя фамилия юзера
+  "user_role" : "student" //роль пользователя. Допустимые значения:
+                 	//"slesson_scheduled_start_dttudent" - учитель,
+                 	//"teacher" - преподаватель,
+                 	//"parent" - родитель,
+                 	//"assistant" - ассистент или другой представитель школы.
+  "student_group" // информация о принадлежности студента к группе
+  {
+	"student_group_id" : "ddfa1488" // уникальный идентификатор группы учеников
+	"student_group_name" : "Группа 228"  // название группы
+  }
+  "lesson_course" // информация о принадлежности занятия (или студента) к курсу
+  {
+	"lesson_course_id" : "dsfad333" // уникальный идентификатор курса
+	"lesson_course_name" : "Эмоциональный интеллект"  // название курса
+  }
+```
+Подобным образом можно задавать любые кастомные иерархии для агрегации, в разрезах которых может быть полезна аналитика.
 
 ## **Часто задаваемые вопросы**
 
